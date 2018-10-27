@@ -10,11 +10,8 @@ public class TestaInsercao {
 
 	public static void main(String[] args) throws SQLException {
 
-		String nome = "Notebook i5";
-		String descricao = "Notebook i5";
-
 		// Ativando conexao
-		try (Connection connection = Database.getConnection()) {
+		try (Connection connection = new ConnectionPool().getConnection()) {
 			// Se quiser desativar
 			connection.setAutoCommit(false);
 			String sql = "insert into Produto (nome, descricao) values (?, ?)";
