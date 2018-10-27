@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.robson.jdbc.modelo.Categoria;
 import br.com.robson.jdbc.modelo.Produto;
 
 public class ProdutosDAO {
@@ -43,29 +44,50 @@ public class ProdutosDAO {
 	}
 
 	public List<Produto> lista() throws SQLException {
-		//Cria lista que tem todos os produtos
+		// Cria lista que tem todos os produtos
 		List<Produto> produtos = new ArrayList<>();
-		//Prepara query sql de produto e busca
+		// Prepara query sql de produto e busca
 		String sql = "select * from Produto";
-		
-		try(PreparedStatement stmt = con.prepareStatement(sql)) {
-			//executa statement
+
+		try (PreparedStatement stmt = con.prepareStatement(sql)) {
+			// executa statement
 			stmt.execute();
-			
-			try(ResultSet rs = stmt.getResultSet()) {
-				//Faz a consulta em cada linha
-				while(rs.next()) {
-					int id = rs.getInt("id");
-					String nome = rs.getString("nome");
-					String descricao =rs.getString("descricao");
-					Produto produto = new Produto(nome, descricao);
-					produto.setId(id);
-					//add na lista
-					produtos.add(produto);
-				}
+			transformaResultadoEmProdutos(produtos, stmt);
+		}
+		return produtos; // Retorna lista
+	}
+
+	private void transformaResultadoEmProdutos(List<Produto> produtos, PreparedStatement stmt) throws SQLException {
+		try (ResultSet rs = stmt.getResultSet()) {
+			// Faz a consulta em cada linha
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String nome = rs.getString("nome");
+				String descricao = rs.getString("descricao");
+				Produto produto = new Produto(nome, descricao);
+				produto.setId(id);
+				// add na lista
+				produtos.add(produto);
 			}
 		}
-		return produtos;	//Retorna lista
+	}
+
+	public List<Produto> busca(Categoria categoria) throws SQLException {
+		System.out.println("Executando uma query");
+		// Cria lista que tem todos os produtos
+		List<Produto> produtos = new ArrayList<>();
+		// Prepara query sql de produto e busca
+		String sql = "select * from Produto where categoria_id = ?";
+
+		try (PreparedStatement stmt = con.prepareStatement(sql)) {
+			stmt.setInt(1, categoria.getId());
+			// executa statement
+			stmt.execute();
+
+			transformaResultadoEmProdutos(produtos, stmt);
+		}
+
+		return produtos; // Retorna lista
 	}
 
 }
