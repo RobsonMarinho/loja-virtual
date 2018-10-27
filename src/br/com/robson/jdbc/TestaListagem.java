@@ -1,18 +1,18 @@
 package br.com.robson.jdbc;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement; 
 
 public class TestaListagem {
 	public static void main(String[] args) throws SQLException {
 		// insere os dados para conexao do DB
-		Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/loja-virtual", "SA", "");
+		Connection connection = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/loja-virtual");
 
 		// Executa o select
-		java.sql.Statement statement = connection.createStatement();
+		Statement statement = connection.createStatement();
 		// Retorna um boolean do resultado da query
 		boolean resultado = statement.execute("select * from Produto");
 		ResultSet resultSet = statement.getResultSet();
@@ -33,4 +33,6 @@ public class TestaListagem {
 		statement.close();
 		connection.close();
 	}
+
+	
 }
