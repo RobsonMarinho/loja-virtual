@@ -1,10 +1,7 @@
 package br.com.robson.jdbc;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import javax.activation.DataSource;
 
 import org.hsqldb.jdbc.JDBCPool;
 
