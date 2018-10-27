@@ -8,11 +8,12 @@ public class TestaRemocao {
 
 	public static void main(String[] args) throws Exception {
 		Connection connection = Database.getConnection();
-		Statement stmt = (Statement) connection.createStatement();
+		Statement stmt = connection.createStatement();
 		stmt.execute("delete from Produto where id>3");
-		int count = ((java.sql.Statement) stmt).getUpdateCount();
+		int count = stmt.getUpdateCount();
 		System.out.println(count + " linhas atualizadas");
 
+		stmt.close();
 		connection.close();
 	}
 }
